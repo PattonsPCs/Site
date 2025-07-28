@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Email service configuration
 const EMAIL_SERVICE_URL = 'https://api.emailjs.com/api/v1.0/email/send'
-const EMAIL_SERVICE_ID = process.env.EMAILJS_SERVICE_ID || 'your_service_id'
-const EMAIL_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID || 'your_template_id'
-const EMAIL_USER_ID = process.env.EMAILJS_USER_ID || 'your_user_id'
+const EMAIL_SERVICE_ID = process.env.EMAILJS_SERVICE_ID
+const EMAIL_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID
+const EMAIL_USER_ID = process.env.EMAILJS_USER_ID
 
 // SMS service configuration (using Twilio) - Disabled for now
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID
@@ -26,6 +26,16 @@ interface ContactFormData {
 // Helper function to send email via EmailJS
 async function sendEmail(formData: ContactFormData) {
   try {
+    // Validate environment variables
+    if (!EMAIL_SERVICE_ID || !EMAIL_TEMPLATE_ID || !EMAIL_USER_ID) {
+      console.error('Missing EmailJS environment variables:', {
+        service_id: EMAIL_SERVICE_ID ? 'SET' : 'MISSING',
+        template_id: EMAIL_TEMPLATE_ID ? 'SET' : 'MISSING',
+        user_id: EMAIL_USER_ID ? 'SET' : 'MISSING'
+      })
+      throw new Error('EmailJS configuration is incomplete')
+    }
+
     // Log the environment variables for debugging (remove in production)
     console.log('EmailJS Config:', {
       service_id: EMAIL_SERVICE_ID,
@@ -33,35 +43,40 @@ async function sendEmail(formData: ContactFormData) {
       user_id: EMAIL_USER_ID
     })
 
-    // EmailJS REST API format
-    const emailData = {
-      service_id: EMAIL_SERVICE_ID,
-      template_id: EMAIL_TEMPLATE_ID,
-      user_id: EMAIL_USER_ID,
-      template_params: {
-        email: WORK_EMAIL,
-        name: formData.name,
-        user_email: formData.email,
-        service: formData.service,
-        message: formData.message,
-        subject: `New Contact Form Submission - ${formData.service}`,
-        reply_to: formData.email
-      }
-    }
+    // EmailJS form data format (this is the correct format)
+    const formDataToSend = new URLSearchParams()
+    formDataToSend.append('service_id', EMAIL_SERVICE_ID)
+    formDataToSend.append('template_id', EMAIL_TEMPLATE_ID)
+    formDataToSend.append('user_id', EMAIL_USER_ID)
+    formDataToSend.append('template_params', JSON.stringify({
+      email: WORK_EMAIL,
+      name: formData.name,
+      user_email: formData.email,
+      service: formData.service,
+      message: formData.message,
+      subject: `New Contact Form Submission - ${formData.service}`,
+      reply_to: formData.email
+    }))
 
     console.log('Sending to EmailJS:', {
       url: EMAIL_SERVICE_URL,
       service_id: EMAIL_SERVICE_ID,
       template_id: EMAIL_TEMPLATE_ID,
-      template_params: emailData.template_params
+      template_params: {
+        email: WORK_EMAIL,
+        name: formData.name,
+        user_email: formData.email,
+        service: formData.service,
+        message: formData.message
+      }
     })
 
     const response = await fetch(EMAIL_SERVICE_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify(emailData)
+      body: formDataToSend
     })
 
     const responseText = await response.text()
