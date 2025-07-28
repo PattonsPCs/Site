@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-dark-300 text-white font-main;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+}
+
+@layer components {
+  .pixel-border {
+    @apply border-2 border-neon-cyan;
+    box-shadow: 
+      0 0 10px #00ffff,
+      inset 0 0 10px #00ffff;
+  }
+  
+  .cyber-button {
+    @apply relative px-6 py-3 bg-transparent border-2 border-neon-cyan text-neon-cyan font-cyber font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-neon-cyan hover:text-dark-300 hover:shadow-[0_0_20px_#00ffff] active:scale-95;
+  }
+  
+  .pixel-card {
+    @apply bg-dark-200 border border-neon-cyan p-6 rounded-none relative overflow-hidden;
+    box-shadow: 
+      0 0 20px #00ffff,
+      inset 0 0 20px rgba(0, 255, 255, 0.1);
+  }
+  
+  .matrix-bg {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+  }
+  
+  .glitch-text {
+    @apply relative;
+  }
+  
+  .glitch-text::before,
+  .glitch-text::after {
+    @apply absolute inset-0;
+    content: attr(data-text);
+  }
+  
+  .glitch-text::before {
+    @apply text-neon-pink;
+    animation: glitch 0.3s ease-in-out infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  }
+  
+  .glitch-text::after {
+    @apply text-neon-green;
+    animation: glitch 0.3s ease-in-out infinite reverse;
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  }
+  
+  .pixel-loader {
+    @apply inline-block w-8 h-8 border-4 border-neon-cyan border-t-transparent rounded-none animate-spin;
+  }
+  
+  .service-card {
+    @apply pixel-card hover:scale-105 transition-transform duration-300 cursor-pointer;
+  }
+  
+  .nav-link {
+    @apply relative px-4 py-2 text-neon-cyan font-cyber font-medium transition-all duration-300 hover:text-white;
+  }
+  
+  .nav-link::before {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300;
+    content: '';
+  }
+  
+  .nav-link:hover::before {
+    @apply w-full;
+  }
+  
+  .hero-gradient {
+    background: linear-gradient(
+      135deg,
+      #050505 0%,
+      #0f0f0f 50%,
+      #1a1a1a 100%
+    );
+  }
+  
+  .neon-text-shadow {
+    text-shadow: 
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 15px currentColor,
+      0 0 20px currentColor;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-200;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neon-cyan;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neon-blue;
+}
+
+/* Selection styles */
+::selection {
+  @apply bg-neon-cyan text-dark-300;
+}
+
+::-moz-selection {
+  @apply bg-neon-cyan text-dark-300;
+} 
