@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Wrench, Monitor, Code, Cpu, HardDrive, Wifi, Shield, Zap, Clock, DollarSign } from 'lucide-react'
+import Link from 'next/link'
 
 const Services = () => {
   const [activeService, setActiveService] = useState('repair')
@@ -198,14 +199,16 @@ const Services = () => {
                 ))}
               </div>
               
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`w-full mt-6 cyber-button border-${currentService.color} text-${currentService.color} hover:bg-${currentService.color} hover:text-dark-300`}
-              >
-                <Zap className="w-5 h-5 mr-2" />
-                Get Quote
-              </motion.button>
+              <Link href="/get-started">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`w-full mt-6 cyber-button border-${currentService.color} text-${currentService.color} hover:bg-${currentService.color} hover:text-dark-300`}
+                >
+                  <Zap className="w-5 h-5 mr-2" />
+                  Get Quote
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
         )}

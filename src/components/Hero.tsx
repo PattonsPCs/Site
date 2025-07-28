@@ -87,19 +87,20 @@ const Hero = () => {
           {/* Service Quick Selector */}
           <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {services.map((service, index) => (
-              <motion.div
-                key={service.title}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className={`pixel-card cursor-pointer group hover:border-${service.color} transition-all duration-300`}
-              >
-                <div className={`text-${service.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  {service.icon}
-                </div>
-                <h3 className="text-lg font-cyber font-semibold mb-2">{service.title}</h3>
-                <p className="text-gray-400 text-sm">{service.description}</p>
-                <ArrowRight className={`w-5 h-5 text-${service.color} mt-3 group-hover:translate-x-1 transition-transform duration-300`} />
-              </motion.div>
+              <Link key={service.title} href="/get-started">
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`pixel-card cursor-pointer group hover:border-${service.color} transition-all duration-300`}
+                >
+                  <div className={`text-${service.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    {service.icon}
+                  </div>
+                  <h3 className="text-lg font-cyber font-semibold mb-2">{service.title}</h3>
+                  <p className="text-gray-400 text-sm">{service.description}</p>
+                  <ArrowRight className={`w-5 h-5 text-${service.color} mt-3 group-hover:translate-x-1 transition-transform duration-300`} />
+                </motion.div>
+              </Link>
             ))}
           </motion.div>
 
