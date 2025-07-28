@@ -33,28 +33,35 @@ async function sendEmail(formData: ContactFormData) {
       user_id: EMAIL_USER_ID
     })
 
-    // EmailJS expects form data, not JSON
-    const formDataToSend = new URLSearchParams({
+    // EmailJS REST API format
+    const emailData = {
       service_id: EMAIL_SERVICE_ID,
       template_id: EMAIL_TEMPLATE_ID,
       user_id: EMAIL_USER_ID,
-      template_params: JSON.stringify({
-        email: WORK_EMAIL, // Using 'email' instead of 'to_email'
+      template_params: {
+        email: WORK_EMAIL,
         name: formData.name,
         user_email: formData.email,
         service: formData.service,
         message: formData.message,
         subject: `New Contact Form Submission - ${formData.service}`,
         reply_to: formData.email
-      })
+      }
+    }
+
+    console.log('Sending to EmailJS:', {
+      url: EMAIL_SERVICE_URL,
+      service_id: EMAIL_SERVICE_ID,
+      template_id: EMAIL_TEMPLATE_ID,
+      template_params: emailData.template_params
     })
 
     const response = await fetch(EMAIL_SERVICE_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: formDataToSend
+      body: JSON.stringify(emailData)
     })
 
     const responseText = await response.text()
