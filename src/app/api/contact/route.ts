@@ -26,30 +26,42 @@ interface ContactFormData {
 // Helper function to send email via EmailJS
 async function sendEmail(formData: ContactFormData) {
   try {
-    const emailData = {
+    // Log the environment variables for debugging (remove in production)
+    console.log('EmailJS Config:', {
+      service_id: EMAIL_SERVICE_ID,
+      template_id: EMAIL_TEMPLATE_ID,
+      user_id: EMAIL_USER_ID
+    })
+
+    // EmailJS expects form data, not JSON
+    const formDataToSend = new URLSearchParams({
       service_id: EMAIL_SERVICE_ID,
       template_id: EMAIL_TEMPLATE_ID,
       user_id: EMAIL_USER_ID,
-      template_params: {
-        to_email: WORK_EMAIL,
-        from_name: formData.name,
-        from_email: formData.email,
+      template_params: JSON.stringify({
+        email: WORK_EMAIL, // Using 'email' instead of 'to_email'
+        name: formData.name,
+        user_email: formData.email,
         service: formData.service,
         message: formData.message,
-        subject: `New Contact Form Submission - ${formData.service}`
-      }
-    }
+        subject: `New Contact Form Submission - ${formData.service}`,
+        reply_to: formData.email
+      })
+    })
 
     const response = await fetch(EMAIL_SERVICE_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify(emailData)
+      body: formDataToSend
     })
 
+    const responseText = await response.text()
+    console.log('EmailJS Response:', response.status, responseText)
+
     if (!response.ok) {
-      throw new Error(`Email service error: ${response.status}`)
+      throw new Error(`Email service error: ${response.status} - ${responseText}`)
     }
 
     return true
@@ -101,11 +113,16 @@ Message: ${formData.message}`
 // Main API handler
 export async function POST(request: NextRequest) {
   try {
+    console.log('Contact form submission received')
+    
     const body = await request.json()
     const { name, email, service, message }: ContactFormData = body
 
+    console.log('Form data:', { name, email, service, message })
+
     // Validate required fields
     if (!name || !email || !service || !message) {
+      console.log('Validation failed: missing required fields')
       return NextResponse.json(
         { error: 'All fields are required' },
         { status: 400 }
@@ -115,15 +132,20 @@ export async function POST(request: NextRequest) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
+      console.log('Validation failed: invalid email format')
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
       )
     }
 
+    console.log('Validation passed, sending email...')
+    
     // Send email only (SMS disabled for now)
     const emailSent = await sendEmail({ name, email, service, message })
     const smsSent = true // SMS disabled, always return true
+
+    console.log('Email sent result:', emailSent)
 
     // Log the submission for debugging
     console.log('Contact form submission:', {
