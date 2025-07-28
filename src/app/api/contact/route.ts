@@ -6,7 +6,7 @@ const EMAIL_SERVICE_ID = process.env.EMAILJS_SERVICE_ID || 'your_service_id'
 const EMAIL_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID || 'your_template_id'
 const EMAIL_USER_ID = process.env.EMAILJS_USER_ID || 'your_user_id'
 
-// SMS service configuration (using Twilio)
+// SMS service configuration (using Twilio) - Disabled for now
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER
@@ -121,9 +121,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Send email and SMS
+    // Send email only (SMS disabled for now)
     const emailSent = await sendEmail({ name, email, service, message })
-    const smsSent = await sendSMS({ name, email, service, message })
+    const smsSent = true // SMS disabled, always return true
 
     // Log the submission for debugging
     console.log('Contact form submission:', {
