@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Wrench, Monitor, Code, ArrowRight, Zap } from 'lucide-react'
+import Link from 'next/link'
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -104,13 +105,13 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="cyber-button text-lg px-8 py-4 group">
+            <Link href="/get-started" className="cyber-button text-lg px-8 py-4 group inline-block">
               <Zap className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
               Get Started Today
-            </button>
-            <button className="px-8 py-4 border-2 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-dark-300 transition-all duration-300 font-cyber">
+            </Link>
+            <Link href="/portfolio" className="px-8 py-4 border-2 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-dark-300 transition-all duration-300 font-cyber inline-block">
               View Portfolio
-            </button>
+            </Link>
           </motion.div>
 
           {/* Stats */}

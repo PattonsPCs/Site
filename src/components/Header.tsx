@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Menu, X, Wrench, Monitor, Code, Quote } from 'lucide-react'
+import Link from 'next/link'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -17,10 +18,10 @@ const Header = () => {
   }, [])
 
   const navItems = [
-    { name: 'Home', href: '#home' },
+    { name: 'Home', href: '/' },
     { name: 'Services', href: '#services' },
     { name: 'About', href: '#about' },
-    { name: 'Portfolio', href: '#portfolio' },
+    { name: 'Portfolio', href: '/portfolio' },
     { name: 'Contact', href: '#contact' },
   ]
 
@@ -57,10 +58,10 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="cyber-button text-sm">
+            <Link href="/get-started" className="cyber-button text-sm inline-block">
               <Quote className="w-4 h-4 mr-2" />
               Get Quote
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -87,10 +88,10 @@ const Header = () => {
                 {item.name}
               </a>
             ))}
-            <button className="cyber-button w-full mt-4">
+            <Link href="/get-started" className="cyber-button w-full mt-4 inline-block text-center">
               <Quote className="w-4 h-4 mr-2" />
               Get Quote
-            </button>
+            </Link>
           </div>
         </div>
       )}
