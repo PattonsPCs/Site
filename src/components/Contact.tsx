@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, MessageSquare, CheckCircle, AlertCircle, Loader } from 'lucide-react'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -11,11 +11,48 @@ const Contact = () => {
     service: '',
     message: ''
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [submitMessage, setSubmitMessage] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setSubmitMessage('')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        setSubmitStatus('success')
+        setSubmitMessage(result.message)
+        // Reset form on success
+        setFormData({
+          name: '',
+          email: '',
+          service: '',
+          message: ''
+        })
+      } else {
+        setSubmitStatus('error')
+        setSubmitMessage(result.error || 'Failed to send message. Please try again.')
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setSubmitStatus('error')
+      setSubmitMessage('Network error. Please check your connection and try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -115,14 +152,48 @@ const Contact = () => {
                 />
               </div>
 
+              {/* Status Message */}
+              {submitStatus !== 'idle' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`p-4 rounded-lg border-2 ${
+                    submitStatus === 'success'
+                      ? 'border-neon-green bg-neon-green/10 text-neon-green'
+                      : 'border-red-500 bg-red-500/10 text-red-400'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    {submitStatus === 'success' ? (
+                      <CheckCircle className="w-5 h-5" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5" />
+                    )}
+                    <span className="font-cyber">{submitMessage}</span>
+                  </div>
+                </motion.div>
+              )}
+
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+                whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
                 type="submit"
-                className="cyber-button w-full text-lg py-4"
+                disabled={isSubmitting}
+                className={`cyber-button w-full text-lg py-4 ${
+                  isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                }`}
               >
-                <Send className="w-5 h-5 mr-2" />
-                Send Message
+                {isSubmitting ? (
+                  <>
+                    <Loader className="w-5 h-5 mr-2 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 mr-2" />
+                    Send Message
+                  </>
+                )}
               </motion.button>
             </form>
           </motion.div>
@@ -147,7 +218,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-cyber font-semibold text-white">Email</h4>
-                    <p className="text-gray-400">contact@pattonspcclinic.com</p>
+                    <p className="text-gray-400">pattonspcs@gmail.com</p>
                   </div>
                 </div>
 
@@ -157,7 +228,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-cyber font-semibold text-white">Phone</h4>
-                    <p className="text-gray-400">(555) 123-4567</p>
+                    <p className="text-gray-400">(219) 230-6791</p>
                   </div>
                 </div>
 
