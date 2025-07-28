@@ -22,33 +22,19 @@ const Contact = () => {
     setSubmitMessage('')
 
     try {
-      // Use EmailJS client-side approach (this is actually the recommended way)
-      const emailjs = (await import('@emailjs/browser')).default
-      
-      const templateParams = {
-        email: 'pattonspcs@gmail.com',
-        name: formData.name,
-        user_email: formData.email,
-        service: formData.service,
-        message: formData.message,
-        subject: `New Contact Form Submission - ${formData.service}`,
-        reply_to: formData.email
-      }
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
 
-      console.log('Sending email with params:', templateParams)
+      const result = await response.json()
 
-      const result = await emailjs.send(
-        'service_fekk8nl', // Your service ID
-        'template_m6zddrr', // Your template ID
-        templateParams,
-        '3dSyj1_GeqtyhIOMx' // Your user ID
-      )
-
-      console.log('EmailJS result:', result)
-
-      if (result.status === 200) {
+      if (response.ok && result.success) {
         setSubmitStatus('success')
-        setSubmitMessage('Message sent successfully! We\'ll get back to you soon.')
+        setSubmitMessage(result.message)
         // Reset form on success
         setFormData({
           name: '',
@@ -58,12 +44,12 @@ const Contact = () => {
         })
       } else {
         setSubmitStatus('error')
-        setSubmitMessage('Failed to send message. Please try again.')
+        setSubmitMessage(result.error || 'Failed to send message. Please try again.')
       }
     } catch (error) {
       console.error('Form submission error:', error)
       setSubmitStatus('error')
-      setSubmitMessage('Failed to send message. Please try again.')
+      setSubmitMessage('Network error. Please check your connection and try again.')
     } finally {
       setIsSubmitting(false)
     }
