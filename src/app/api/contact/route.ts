@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
 
-// Email service configuration
-const EMAIL_SERVICE_URL = 'https://api.emailjs.com/api/v1.0/email/send'
-const EMAIL_SERVICE_ID = process.env.EMAILJS_SERVICE_ID || process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-const EMAIL_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-const EMAIL_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY || process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-
-// SMS service configuration (using Twilio) - Disabled for now
-const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID
-const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN
-const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER
-const TARGET_PHONE_NUMBER = '(219) 230-6791'
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 // Contact information
 const WORK_EMAIL = 'pattonspcs@gmail.com'
@@ -23,112 +15,77 @@ interface ContactFormData {
   message: string
 }
 
-// Helper function to send email via EmailJS
+// Helper function to send email via Resend
 async function sendEmail(formData: ContactFormData) {
   try {
-    // Validate environment variables
-    if (!EMAIL_SERVICE_ID || !EMAIL_TEMPLATE_ID || !EMAIL_PUBLIC_KEY) {
-      console.error('Missing EmailJS environment variables:', {
-        service_id: EMAIL_SERVICE_ID ? 'SET' : 'MISSING',
-        template_id: EMAIL_TEMPLATE_ID ? 'SET' : 'MISSING',
-        public_key: EMAIL_PUBLIC_KEY ? 'SET' : 'MISSING'
-      })
-      throw new Error('EmailJS configuration is incomplete')
+    // Validate API key
+    if (!process.env.RESEND_API_KEY) {
+      console.error('Missing Resend API key')
+      throw new Error('Resend configuration is incomplete')
     }
 
-    // Log the environment variables for debugging (remove in production)
-    console.log('EmailJS Config:', {
-      service_id: EMAIL_SERVICE_ID,
-      template_id: EMAIL_TEMPLATE_ID,
-      public_key: EMAIL_PUBLIC_KEY ? EMAIL_PUBLIC_KEY.substring(0, 4) + '...' : 'MISSING'
-    })
-
-    // EmailJS form data format (updated for new API)
-    const formDataToSend = new URLSearchParams()
-    formDataToSend.append('service_id', EMAIL_SERVICE_ID)
-    formDataToSend.append('template_id', EMAIL_TEMPLATE_ID)
-    formDataToSend.append('public_key', EMAIL_PUBLIC_KEY)
-    formDataToSend.append('template_params', JSON.stringify({
-      email: WORK_EMAIL,
-      name: formData.name,
-      user_email: formData.email,
-      service: formData.service,
-      message: formData.message,
+    console.log('Sending email via Resend:', {
+      to: WORK_EMAIL,
+      from: formData.email,
       subject: `New Contact Form Submission - ${formData.service}`,
-      reply_to: formData.email
-    }))
-
-    console.log('Sending to EmailJS:', {
-      url: EMAIL_SERVICE_URL,
-      service_id: EMAIL_SERVICE_ID,
-      template_id: EMAIL_TEMPLATE_ID,
-      public_key: EMAIL_PUBLIC_KEY ? EMAIL_PUBLIC_KEY.substring(0, 4) + '...' : 'MISSING',
-      template_params: {
-        email: WORK_EMAIL,
-        name: formData.name,
-        user_email: formData.email,
-        service: formData.service,
-        message: formData.message
-      }
+      name: formData.name,
+      service: formData.service
     })
 
-    const response = await fetch(EMAIL_SERVICE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formDataToSend
+    const { data, error } = await resend.emails.send({
+      from: 'Patton\'s PC Clinic <noreply@pattonspcs.com>',
+      to: [WORK_EMAIL],
+      replyTo: formData.email,
+      subject: `New Contact Form Submission - ${formData.service}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
+            New Contact Form Submission
+          </h2>
+          
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #007bff; margin-top: 0;">Contact Information</h3>
+            <p><strong>Name:</strong> ${formData.name}</p>
+            <p><strong>Email:</strong> <a href="mailto:${formData.email}">${formData.email}</a></p>
+            <p><strong>Service Requested:</strong> ${formData.service}</p>
+          </div>
+          
+          <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 8px;">
+            <h3 style="color: #333; margin-top: 0;">Message</h3>
+            <p style="line-height: 1.6; color: #555;">${formData.message.replace(/\n/g, '<br>')}</p>
+          </div>
+          
+          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; color: #666; font-size: 14px;">
+            <p><strong>Submitted:</strong> ${new Date().toLocaleString()}</p>
+            <p><strong>From:</strong> Patton's PC Clinic Website Contact Form</p>
+          </div>
+        </div>
+      `,
+      text: `
+New Contact Form Submission
+
+Contact Information:
+- Name: ${formData.name}
+- Email: ${formData.email}
+- Service Requested: ${formData.service}
+
+Message:
+${formData.message}
+
+Submitted: ${new Date().toLocaleString()}
+From: Patton's PC Clinic Website Contact Form
+      `
     })
 
-    const responseText = await response.text()
-    console.log('EmailJS Response:', response.status, responseText)
-
-    if (!response.ok) {
-      throw new Error(`Email service error: ${response.status} - ${responseText}`)
+    if (error) {
+      console.error('Resend email error:', error)
+      throw new Error(`Email service error: ${error.message}`)
     }
 
+    console.log('Email sent successfully via Resend:', data)
     return true
   } catch (error) {
     console.error('Email sending failed:', error)
-    return false
-  }
-}
-
-// Helper function to send SMS via Twilio
-async function sendSMS(formData: ContactFormData) {
-  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER) {
-    console.log('Twilio credentials not configured, skipping SMS')
-    return true // Don't fail the request if SMS is not configured
-  }
-
-  try {
-    const messageBody = `New Contact Form Submission:
-From: ${formData.name}
-Email: ${formData.email}
-Service: ${formData.service}
-Message: ${formData.message}`
-
-    const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Basic ${Buffer.from(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`).toString('base64')}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        To: TARGET_PHONE_NUMBER,
-        From: TWILIO_PHONE_NUMBER,
-        Body: messageBody
-      })
-    })
-
-    if (!response.ok) {
-      const errorData = await response.text()
-      throw new Error(`SMS service error: ${response.status} - ${errorData}`)
-    }
-
-    return true
-  } catch (error) {
-    console.error('SMS sending failed:', error)
     return false
   }
 }
@@ -138,9 +95,7 @@ export async function POST(request: NextRequest) {
   try {
     console.log('Contact form submission received')
     console.log('Environment check:', {
-      EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID ? 'SET' : 'MISSING',
-      EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID ? 'SET' : 'MISSING',
-      EMAILJS_USER_ID: process.env.EMAILJS_USER_ID ? 'SET' : 'MISSING',
+      RESEND_API_KEY: process.env.RESEND_API_KEY ? 'SET' : 'MISSING',
       NODE_ENV: process.env.NODE_ENV,
       VERCEL_ENV: process.env.VERCEL_ENV
     })
@@ -171,9 +126,8 @@ export async function POST(request: NextRequest) {
 
     console.log('Validation passed, sending email...')
     
-    // Send email only (SMS disabled for now)
+    // Send email via Resend
     const emailSent = await sendEmail({ name, email, service, message })
-    const smsSent = true // SMS disabled, always return true
 
     console.log('Email sent result:', emailSent)
 
@@ -184,23 +138,21 @@ export async function POST(request: NextRequest) {
       service,
       message,
       timestamp: new Date().toISOString(),
-      emailSent,
-      smsSent
+      emailSent
     })
+
+    if (!emailSent) {
+      return NextResponse.json(
+        { error: 'Failed to send email. Please try again later.' },
+        { status: 500 }
+      )
+    }
 
     // Return success response
     return NextResponse.json({
       success: true,
       message: 'Message sent successfully! We\'ll get back to you soon.',
-      emailSent,
-      smsSent,
-              debug: {
-          envCheck: {
-            EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID ? 'SET' : 'MISSING',
-            EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID ? 'SET' : 'MISSING',
-            EMAILJS_PUBLIC_KEY: process.env.EMAILJS_PUBLIC_KEY ? 'SET' : 'MISSING'
-          }
-        }
+      emailSent
     })
 
   } catch (error) {
