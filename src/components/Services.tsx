@@ -24,10 +24,10 @@ const Services = () => {
         'Network Troubleshooting'
       ],
       pricing: {
-        diagnostic: 29,
-        virusRemoval: 79,
-        hardwareRepair: 99,
-        dataRecovery: 149
+        diagnostic: 0,
+        virusRemoval: 50,
+        hardwareRepair: 75,
+        dataRecovery: 150
       },
       turnaround: '24-48 hours'
     },
@@ -46,10 +46,10 @@ const Services = () => {
         'Warranty Support'
       ],
       pricing: {
-        assembly: 150,
-        consultation: 50,
-        overclocking: 75,
-        maintenance: 100
+        assembly: 100,
+        consultation: 25,
+        overclocking: 50,
+        maintenance: 75
       },
       turnaround: '3-5 business days'
     },
@@ -68,10 +68,10 @@ const Services = () => {
         'Ongoing Support'
       ],
       pricing: {
-        basic: 999,
-        standard: 1999,
-        premium: 3999,
-        maintenance: 99
+        basic: 250,
+        standard: 500,
+        premium: 1000,
+        maintenance: 150
       },
       turnaround: '2-4 weeks'
     }
