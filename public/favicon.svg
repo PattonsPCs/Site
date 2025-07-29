@@ -1,0 +1,40 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="32" height="32" rx="4" fill="#0a0a0a"/>
+  
+  <!-- Main PC icon -->
+  <rect x="6" y="8" width="20" height="12" rx="2" fill="none" stroke="#00ffff" stroke-width="1.5"/>
+  
+  <!-- Screen -->
+  <rect x="7.5" y="9.5" width="17" height="9" rx="1" fill="#1a1a1a"/>
+  
+  <!-- Screen glow -->
+  <rect x="7.5" y="9.5" width="17" height="9" rx="1" fill="url(#screenGlow)"/>
+  
+  <!-- Stand -->
+  <rect x="14" y="20" width="4" height="3" fill="#00ffff"/>
+  
+  <!-- Base -->
+  <rect x="10" y="23" width="12" height="2" rx="1" fill="#00ffff"/>
+  
+  <!-- Circuit lines -->
+  <path d="M8 6 L12 6" stroke="#ff00ff" stroke-width="1" stroke-linecap="round"/>
+  <path d="M20 6 L24 6" stroke="#ff00ff" stroke-width="1" stroke-linecap="round"/>
+  <path d="M8 26 L12 26" stroke="#00ff00" stroke-width="1" stroke-linecap="round"/>
+  <path d="M20 26 L24 26" stroke="#00ff00" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Corner accents -->
+  <circle cx="6" cy="6" r="1" fill="#00ffff"/>
+  <circle cx="26" cy="6" r="1" fill="#ff00ff"/>
+  <circle cx="6" cy="26" r="1" fill="#00ff00"/>
+  <circle cx="26" cy="26" r="1" fill="#00ffff"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="screenGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ffff" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#00ffff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#00ffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg> 

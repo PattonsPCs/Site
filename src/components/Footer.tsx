@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react'
+import { Mail, Phone, MapPin, Youtube, Instagram } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -24,15 +24,22 @@ const Footer = () => {
               services with a modern gaming aesthetic.
             </p>
             <div className="flex space-x-4">
-              <div className="w-10 h-10 bg-neon-cyan/20 flex items-center justify-center hover:bg-neon-cyan/40 transition-colors duration-300 cursor-pointer">
-                <ExternalLink className="w-5 h-5 text-neon-cyan" />
-              </div>
-              <div className="w-10 h-10 bg-neon-pink/20 flex items-center justify-center hover:bg-neon-pink/40 transition-colors duration-300 cursor-pointer">
-                <ExternalLink className="w-5 h-5 text-neon-pink" />
-              </div>
-              <div className="w-10 h-10 bg-neon-green/20 flex items-center justify-center hover:bg-neon-green/40 transition-colors duration-300 cursor-pointer">
-                <ExternalLink className="w-5 h-5 text-neon-green" />
-              </div>
+              <a 
+                href="https://www.youtube.com/@pattons-pcs" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-neon-cyan/20 flex items-center justify-center hover:bg-neon-cyan/40 transition-colors duration-300 cursor-pointer"
+              >
+                <Youtube className="w-5 h-5 text-neon-cyan" />
+              </a>
+              <a 
+                href="https://www.instagram.com/pattons_pcs/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-neon-pink/20 flex items-center justify-center hover:bg-neon-pink/40 transition-colors duration-300 cursor-pointer"
+              >
+                <Instagram className="w-5 h-5 text-neon-pink" />
+              </a>
             </div>
           </div>
 
@@ -78,15 +85,19 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-neon-cyan" />
-                <span className="text-gray-400 text-sm">contact@pattonspcclinic.com</span>
+                <a href="mailto:pattonspcs@gmail.com" className="text-gray-400 text-sm hover:text-neon-cyan transition-colors duration-300">
+                  pattonspcs@gmail.com
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-neon-pink" />
-                <span className="text-gray-400 text-sm">(555) 123-4567</span>
+                <a href="tel:2192306791" className="text-gray-400 text-sm hover:text-neon-pink transition-colors duration-300">
+                  (219) 230-6791
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="w-4 h-4 text-neon-green" />
-                <span className="text-gray-400 text-sm">Serving the Greater Area</span>
+                <span className="text-gray-400 text-sm">Greater Northwest Indiana Area</span>
               </div>
             </div>
           </div>
