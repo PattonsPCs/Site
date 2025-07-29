@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Email service configuration
 const EMAIL_SERVICE_URL = 'https://api.emailjs.com/api/v1.0/email/send'
-const EMAIL_SERVICE_ID = process.env.EMAILJS_SERVICE_ID
-const EMAIL_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID
-const EMAIL_USER_ID = process.env.EMAILJS_USER_ID
+const EMAIL_SERVICE_ID = process.env.EMAILJS_SERVICE_ID || process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+const EMAIL_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+const EMAIL_USER_ID = process.env.EMAILJS_USER_ID || process.env.NEXT_PUBLIC_EMAILJS_USER_ID
 
 // SMS service configuration (using Twilio) - Disabled for now
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID
@@ -136,6 +136,13 @@ Message: ${formData.message}`
 export async function POST(request: NextRequest) {
   try {
     console.log('Contact form submission received')
+    console.log('Environment check:', {
+      EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID ? 'SET' : 'MISSING',
+      EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID ? 'SET' : 'MISSING',
+      EMAILJS_USER_ID: process.env.EMAILJS_USER_ID ? 'SET' : 'MISSING',
+      NODE_ENV: process.env.NODE_ENV,
+      VERCEL_ENV: process.env.VERCEL_ENV
+    })
     
     const body = await request.json()
     const { name, email, service, message }: ContactFormData = body
@@ -185,7 +192,14 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Message sent successfully! We\'ll get back to you soon.',
       emailSent,
-      smsSent
+      smsSent,
+      debug: {
+        envCheck: {
+          EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID ? 'SET' : 'MISSING',
+          EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID ? 'SET' : 'MISSING',
+          EMAILJS_USER_ID: process.env.EMAILJS_USER_ID ? 'SET' : 'MISSING'
+        }
+      }
     })
 
   } catch (error) {
