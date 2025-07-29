@@ -238,7 +238,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-cyber font-semibold text-white">Location</h4>
-                    <p className="text-gray-400">Serving the Greater Area</p>
+                    <p className="text-gray-400">Serving the Greater Northwest Indiana Area</p>
                   </div>
                 </div>
               </div>

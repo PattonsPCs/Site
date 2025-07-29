@@ -7,14 +7,6 @@ import Link from 'next/link'
 
 const GetStartedPage = () => {
   const [selectedService, setSelectedService] = useState('')
-  const [appointmentDate, setAppointmentDate] = useState('')
-  const [appointmentTime, setAppointmentTime] = useState('')
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    description: ''
-  })
 
   const services = [
     {
@@ -46,30 +38,7 @@ const GetStartedPage = () => {
     }
   ]
 
-  const timeSlots = [
-    '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
-    '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'
-  ]
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log('Appointment scheduled:', {
-      service: selectedService,
-      date: appointmentDate,
-      time: appointmentTime,
-      ...formData
-    })
-    // Here you would typically send this to your backend
-    alert('Appointment request submitted! We\'ll contact you soon.')
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
 
   return (
     <div className="min-h-screen bg-dark-300">
@@ -155,7 +124,7 @@ const GetStartedPage = () => {
             </div>
           </motion.div>
 
-          {/* Appointment Form */}
+                    {/* Calendly Integration */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -163,127 +132,94 @@ const GetStartedPage = () => {
             className="space-y-6"
           >
             <h2 className="text-2xl font-cyber font-bold text-white mb-6">
-              Schedule Appointment
+              Schedule Your Consultation
             </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Service Selection Display */}
-              {selectedService && (
-                <div className="pixel-card bg-neon-cyan/10 border-neon-cyan">
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-6 h-6 text-neon-green" />
-                    <span className="text-white font-cyber">
-                      Selected: {services.find(s => s.id === selectedService)?.title}
-                    </span>
+            {/* Service Selection Display */}
+            {selectedService && (
+              <div className="pixel-card bg-neon-cyan/10 border-neon-cyan mb-6">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-6 h-6 text-neon-green" />
+                  <span className="text-white font-cyber">
+                    Selected: {services.find(s => s.id === selectedService)?.title}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Calendly Info Card */}
+            <div className="pixel-card bg-gradient-to-br from-dark-200 to-dark-300 border-neon-cyan">
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-neon-cyan to-neon-pink rounded-full flex items-center justify-center mx-auto">
+                  <Calendar className="w-10 h-10 text-white" />
+                </div>
+                
+                <div>
+                  <h3 className="text-neon-cyan font-cyber font-bold text-xl mb-2">
+                    Book Your Free Consultation
+                  </h3>
+                  <p className="text-gray-400 mb-4">
+                    Choose your preferred time and we'll discuss your project in detail. 
+                    No commitment required!
+                  </p>
+                </div>
+
+                {/* Benefits */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-neon-green" />
+                    <span className="text-gray-300">Free consultation</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-neon-green" />
+                    <span className="text-gray-300">Flexible scheduling</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-neon-green" />
+                    <span className="text-gray-300">Video or phone call</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-neon-green" />
+                    <span className="text-gray-300">Instant confirmation</span>
                   </div>
                 </div>
-              )}
 
-              {/* Date and Time Selection */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-neon-cyan font-cyber font-semibold mb-2">
-                    Preferred Date
-                  </label>
-                  <input
-                    type="date"
-                    value={appointmentDate}
-                    onChange={(e) => setAppointmentDate(e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-3 bg-dark-200 border border-neon-cyan/30 text-white focus:border-neon-cyan focus:outline-none transition-colors duration-300"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-neon-cyan font-cyber font-semibold mb-2">
-                    Preferred Time
-                  </label>
-                  <select
-                    value={appointmentTime}
-                    onChange={(e) => setAppointmentTime(e.target.value)}
-                    className="w-full px-4 py-3 bg-dark-200 border border-neon-cyan/30 text-white focus:border-neon-cyan focus:outline-none transition-colors duration-300"
-                    required
+                {/* Calendly Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    const width = 600
+                    const height = 700
+                    const left = window.screen.width / 2 - width / 2
+                    const top = window.screen.height / 2 - height / 2
+                    
+                    window.open(
+                      'https://calendly.com/pattonspcs',
+                      'calendly',
+                      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+                    )
+                  }}
+                  className="w-full bg-gradient-to-r from-neon-cyan to-neon-pink text-white font-cyber font-bold py-4 px-8 rounded-lg hover:shadow-lg hover:shadow-neon-cyan/30 transition-all duration-300 transform hover:scale-105"
+                >
+                  <Calendar className="w-5 h-5 mr-2 inline" />
+                  Schedule Now
+                </motion.button>
+
+                {/* Alternative Contact */}
+                <div className="pt-4 border-t border-neon-cyan/30">
+                  <p className="text-gray-400 text-sm mb-2">
+                    Prefer to call directly?
+                  </p>
+                  <a 
+                    href="tel:2192306791" 
+                    className="text-neon-cyan hover:text-neon-pink transition-colors duration-300 font-cyber"
                   >
-                    <option value="">Select time</option>
-                    {timeSlots.map((time) => (
-                      <option key={time} value={time}>{time}</option>
-                    ))}
-                  </select>
+                    (219) 230-6791
+                  </a>
                 </div>
               </div>
-
-              {/* Contact Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-neon-cyan font-cyber font-semibold mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-dark-200 border border-neon-cyan/30 text-white focus:border-neon-cyan focus:outline-none transition-colors duration-300"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-neon-cyan font-cyber font-semibold mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-dark-200 border border-neon-cyan/30 text-white focus:border-neon-cyan focus:outline-none transition-colors duration-300"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-neon-cyan font-cyber font-semibold mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-dark-200 border border-neon-cyan/30 text-white focus:border-neon-cyan focus:outline-none transition-colors duration-300"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-neon-cyan font-cyber font-semibold mb-2">
-                  Project Description
-                </label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  rows={4}
-                  placeholder="Tell us about your project or what you need help with..."
-                  className="w-full px-4 py-3 bg-dark-200 border border-neon-cyan/30 text-white focus:border-neon-cyan focus:outline-none transition-colors duration-300 resize-none"
-                  required
-                />
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                type="submit"
-                disabled={!selectedService}
-                className={`w-full cyber-button text-lg py-4 ${
-                  !selectedService ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-              >
-                <Calendar className="w-5 h-5 mr-2" />
-                Schedule Appointment
-              </motion.button>
-            </form>
+            </div>
           </motion.div>
         </div>
       </div>

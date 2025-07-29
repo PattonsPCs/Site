@@ -9,6 +9,7 @@ import Portfolio from '../components/Portfolio'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
 import MatrixBackground from '../components/MatrixBackground'
+import CalendlyWidget from '../components/CalendlyWidget'
 
 export default function Home() {
   return (
@@ -28,6 +29,8 @@ export default function Home() {
       <Contact />
       
       <Footer />
+      
+      <CalendlyWidget calendlyUrl="https://calendly.com/pattonspcs" />
     </main>
   )
 } 
