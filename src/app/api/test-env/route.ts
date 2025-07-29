@@ -48,17 +48,29 @@ export async function GET() {
     }))
 
     console.log('Sending test email to EmailJS...')
+    console.log('Request details:', {
+      url: EMAIL_SERVICE_URL,
+      method: 'POST',
+      bodySize: formDataToSend.toString().length,
+      bodyPreview: formDataToSend.toString().substring(0, 200) + '...'
+    })
 
     const response = await fetch(EMAIL_SERVICE_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': 'Patton-PC-Clinic/1.0'
       },
       body: formDataToSend
     })
 
     const responseText = await response.text()
-    console.log('EmailJS Response:', response.status, responseText)
+    console.log('EmailJS Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries()),
+      body: responseText
+    })
 
     if (!response.ok) {
       return NextResponse.json({
