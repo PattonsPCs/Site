@@ -33,7 +33,7 @@ async function sendEmail(formData: ContactFormData) {
     })
 
     const { data, error } = await resend.emails.send({
-      from: 'Patton\'s PC Clinic <noreply@pattonspcs.com>',
+      from: 'Patton\'s PC Clinic <onboarding@resend.dev>',
       to: [WORK_EMAIL],
       replyTo: formData.email,
       subject: `New Contact Form Submission - ${formData.service}`,

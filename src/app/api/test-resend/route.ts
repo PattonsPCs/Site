@@ -78,6 +78,7 @@ From: Patton's PC Clinic Website - Resend Test
         status: 'error',
         message: 'Failed to send test email via Resend',
         error: error.message,
+        errorDetails: error,
         envCheck: {
           RESEND_API_KEY: 'SET'
         }
