@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const EMAIL_SERVICE_URL = 'https://api.emailjs.com/api/v1.0/email/send'
 const EMAIL_SERVICE_ID = process.env.EMAILJS_SERVICE_ID || process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
 const EMAIL_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-const EMAIL_USER_ID = process.env.EMAILJS_USER_ID || process.env.NEXT_PUBLIC_EMAILJS_USER_ID
+const EMAIL_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY || process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
 // SMS service configuration (using Twilio) - Disabled for now
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID
@@ -27,11 +27,11 @@ interface ContactFormData {
 async function sendEmail(formData: ContactFormData) {
   try {
     // Validate environment variables
-    if (!EMAIL_SERVICE_ID || !EMAIL_TEMPLATE_ID || !EMAIL_USER_ID) {
+    if (!EMAIL_SERVICE_ID || !EMAIL_TEMPLATE_ID || !EMAIL_PUBLIC_KEY) {
       console.error('Missing EmailJS environment variables:', {
         service_id: EMAIL_SERVICE_ID ? 'SET' : 'MISSING',
         template_id: EMAIL_TEMPLATE_ID ? 'SET' : 'MISSING',
-        user_id: EMAIL_USER_ID ? 'SET' : 'MISSING'
+        public_key: EMAIL_PUBLIC_KEY ? 'SET' : 'MISSING'
       })
       throw new Error('EmailJS configuration is incomplete')
     }
@@ -40,14 +40,14 @@ async function sendEmail(formData: ContactFormData) {
     console.log('EmailJS Config:', {
       service_id: EMAIL_SERVICE_ID,
       template_id: EMAIL_TEMPLATE_ID,
-      user_id: EMAIL_USER_ID
+      public_key: EMAIL_PUBLIC_KEY ? EMAIL_PUBLIC_KEY.substring(0, 4) + '...' : 'MISSING'
     })
 
-    // EmailJS form data format (this is the correct format)
+    // EmailJS form data format (updated for new API)
     const formDataToSend = new URLSearchParams()
     formDataToSend.append('service_id', EMAIL_SERVICE_ID)
     formDataToSend.append('template_id', EMAIL_TEMPLATE_ID)
-    formDataToSend.append('user_id', EMAIL_USER_ID)
+    formDataToSend.append('public_key', EMAIL_PUBLIC_KEY)
     formDataToSend.append('template_params', JSON.stringify({
       email: WORK_EMAIL,
       name: formData.name,
@@ -62,6 +62,7 @@ async function sendEmail(formData: ContactFormData) {
       url: EMAIL_SERVICE_URL,
       service_id: EMAIL_SERVICE_ID,
       template_id: EMAIL_TEMPLATE_ID,
+      public_key: EMAIL_PUBLIC_KEY ? EMAIL_PUBLIC_KEY.substring(0, 4) + '...' : 'MISSING',
       template_params: {
         email: WORK_EMAIL,
         name: formData.name,
@@ -193,13 +194,13 @@ export async function POST(request: NextRequest) {
       message: 'Message sent successfully! We\'ll get back to you soon.',
       emailSent,
       smsSent,
-      debug: {
-        envCheck: {
-          EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID ? 'SET' : 'MISSING',
-          EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID ? 'SET' : 'MISSING',
-          EMAILJS_USER_ID: process.env.EMAILJS_USER_ID ? 'SET' : 'MISSING'
+              debug: {
+          envCheck: {
+            EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID ? 'SET' : 'MISSING',
+            EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID ? 'SET' : 'MISSING',
+            EMAILJS_PUBLIC_KEY: process.env.EMAILJS_PUBLIC_KEY ? 'SET' : 'MISSING'
+          }
         }
-      }
     })
 
   } catch (error) {
