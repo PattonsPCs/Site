@@ -15,7 +15,7 @@ const GetStartedPage = () => {
       icon: <Wrench className="w-8 h-8" />,
       color: 'neon-green',
       description: 'Diagnostics, virus removal, hardware repair',
-      pricing: 'Starting at $29',
+      pricing: 'Starting at $50',
       duration: '24-48 hours'
     },
     {
@@ -33,7 +33,7 @@ const GetStartedPage = () => {
       icon: <Code className="w-8 h-8" />,
       color: 'neon-pink',
       description: 'Modern, responsive websites',
-      pricing: 'Starting at $999',
+      pricing: 'Starting at $250',
       duration: '2-4 weeks'
     }
   ]
