@@ -33,7 +33,7 @@ const About = () => {
               has grown into a full-service tech company serving both individuals and businesses.
             </p>
             <p className="text-lg text-gray-400 leading-relaxed">
-              We combine cutting-edge technology with a modern gaming aesthetic to deliver 
+              We combine cutting-edge technology to deliver 
               exceptional results. Our team of certified technicians and developers are 
               passionate about technology and committed to providing the best service possible.
             </p>

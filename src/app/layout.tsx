@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "Patton's PC Clinic - Computer Repair, Custom PC Building & Web Development",
-  description: "Professional computer repair, custom PC building, and website development services. Modern tech solutions with a gaming aesthetic. Get your quote today!",
+  description: "Professional computer repair, custom PC building, and website development services. Modern tech solutions. Get your quote today!",
   keywords: [
     'computer repair',
     'custom PC building',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Patton's PC Clinic - Professional Tech Services",
-    description: "Computer repair, custom PC building, and website development with a modern gaming aesthetic.",
+    description: "Computer repair, custom PC building, and website development services.",
     url: 'https://pattonspcclinic.com',
     siteName: "Patton's PC Clinic",
     images: [
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Patton's PC Clinic - Professional Tech Services",
-    description: "Computer repair, custom PC building, and website development with a modern gaming aesthetic.",
+    description: "Computer repair, custom PC building, and website development services.",
     images: ['/og-image.jpg'],
   },
   robots: {

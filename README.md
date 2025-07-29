@@ -4,7 +4,7 @@ A modern, pixelized, gamified yet professional website for Patton's PC Clinic, o
 
 ## 🚀 Features
 
-- **Modern Gaming Aesthetic**: Pixelized design with neon accents and cyberpunk elements
+- **Modern Design**: Pixelized design with neon accents and cyberpunk elements
 - **Interactive Components**: Animated hero section, service selector, and portfolio showcase
 - **Responsive Design**: Fully responsive across all devices
 - **Performance Optimized**: Built with Next.js 14, TypeScript, and Tailwind CSS

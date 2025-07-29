@@ -21,7 +21,7 @@ const Footer = () => {
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
               Professional computer repair, custom PC building, and website development 
-              services with a modern gaming aesthetic.
+              services.
             </p>
             <div className="flex space-x-4">
               <a 

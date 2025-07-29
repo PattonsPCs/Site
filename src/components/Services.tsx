@@ -93,9 +93,9 @@ const Services = () => {
           <h2 className="text-4xl md:text-5xl font-cyber font-bold text-neon-cyan mb-4">
             OUR SERVICES
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Professional tech solutions with a modern gaming aesthetic
-          </p>
+                      <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Professional tech solutions
+            </p>
         </motion.div>
 
         {/* Service Tabs */}

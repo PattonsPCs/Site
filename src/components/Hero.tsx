@@ -80,7 +80,7 @@ const Hero = () => {
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
               Professional computer repair, custom PC building, and website development
               <br />
-              <span className="text-neon-cyan font-semibold">with a modern gaming aesthetic</span>
+              
             </p>
           </motion.div>
 
