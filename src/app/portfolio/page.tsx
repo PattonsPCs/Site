@@ -249,6 +249,9 @@ const PortfolioPage = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    window.open('https://calendly.com/pattonspcs', '_blank')
+                  }}
                   className="w-full bg-gradient-to-r from-neon-cyan to-neon-pink text-white font-cyber font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-neon-cyan/30 transition-all duration-300"
                 >
                   Claim This Spot
