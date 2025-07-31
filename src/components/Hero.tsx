@@ -72,20 +72,18 @@ const Hero = () => {
         >
           {/* Main Title */}
           <motion.div variants={itemVariants} className="space-y-4">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-cyber font-bold">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-cyber font-bold leading-tight">
               <span className="text-neon-cyan neon-text-shadow">PATTON'S</span>
               <br />
               <span className="text-white">PC CLINIC</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto px-4">
               Professional computer repair, custom PC building, and website development
-              <br />
-              
             </p>
           </motion.div>
 
           {/* Service Quick Selector */}
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto px-4">
             {services.map((service, index) => (
               <Link key={service.title} href="/get-started">
                 <motion.div
@@ -93,11 +91,11 @@ const Hero = () => {
                   whileTap={{ scale: 0.95 }}
                   className={`pixel-card cursor-pointer group hover:border-${service.color} transition-all duration-300`}
                 >
-                  <div className={`text-${service.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`text-${service.color} mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300`}>
                     {service.icon}
                   </div>
-                  <h3 className="text-lg font-cyber font-semibold mb-2">{service.title}</h3>
-                  <p className="text-gray-400 text-sm">{service.description}</p>
+                  <h3 className="text-base sm:text-lg font-cyber font-semibold mb-2">{service.title}</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">{service.description}</p>
                   <ArrowRight className={`w-5 h-5 text-${service.color} mt-3 group-hover:translate-x-1 transition-transform duration-300`} />
                 </motion.div>
               </Link>

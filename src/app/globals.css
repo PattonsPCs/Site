@@ -6,11 +6,31 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
   
   body {
     @apply bg-dark-300 text-white font-main;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  /* Mobile-specific adjustments */
+  @media (max-width: 768px) {
+    html {
+      font-size: 14px;
+    }
+    
+    .pixel-card {
+      @apply p-4;
+    }
+    
+    .cyber-button {
+      @apply px-4 py-2 text-sm;
+    }
   }
 }
 
