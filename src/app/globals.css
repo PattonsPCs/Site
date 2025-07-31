@@ -75,6 +75,16 @@
       word-wrap: break-word;
       overflow-wrap: break-word;
     }
+    
+    /* Header spacing for mobile */
+    #home {
+      padding-top: 4rem; /* 64px for header height */
+    }
+    
+    /* Ensure header doesn't overlap content */
+    header {
+      height: 4rem;
+    }
   }
 }
 
