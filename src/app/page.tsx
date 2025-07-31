@@ -13,24 +13,26 @@ import CalendlyWidget from '../components/CalendlyWidget'
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen">
-      <MatrixBackground />
-      
-      <Header />
-      
-      <Hero />
-      
-      <Services />
-      
-      <About />
-      
-      <Portfolio />
-      
-      <Contact />
-      
-      <Footer />
-      
-      <CalendlyWidget calendlyUrl="https://calendly.com/pattonspcs" />
-    </main>
+    <div className="w-full overflow-x-hidden">
+      <main className="relative min-h-screen w-full">
+        <MatrixBackground />
+        
+        <Header />
+        
+        <Hero />
+        
+        <Services />
+        
+        <About />
+        
+        <Portfolio />
+        
+        <Contact />
+        
+        <Footer />
+        
+        <CalendlyWidget calendlyUrl="https://calendly.com/pattonspcs" />
+      </main>
+    </div>
   )
 } 
