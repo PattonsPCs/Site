@@ -70,7 +70,7 @@ const Portfolio = () => {
             <div className="text-neon-cyan mb-4 flex justify-center">
               <Users className="w-8 h-8" />
             </div>
-            <div className="text-3xl font-cyber font-bold text-white mb-2">3</div>
+            <div className="text-3xl font-cyber font-bold text-white mb-2">6</div>
             <div className="text-gray-400 font-cyber">Spots Available</div>
           </div>
           <div className="pixel-card text-center">
