@@ -2,243 +2,85 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ExternalLink, Eye, Monitor, Code, Wrench, Star, Calendar, ArrowLeft, Filter } from 'lucide-react'
+import { Star, MessageCircle, CheckCircle, Gift, Users, Award, ArrowLeft, Calendar, Phone } from 'lucide-react'
 import Link from 'next/link'
 
 const PortfolioPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  interface Project {
-    id: number;
-    title: string;
-    category: string;
-    image: string;
-    description: string;
-    tech: string[];
-    client: string;
-    date: string;
-    rating: number;
-    price: string;
-    features: string[];
-  }
+  const [selectedFeedback, setSelectedFeedback] = useState<number | null>(null)
 
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-
-  const categories = [
-    { id: 'all', name: 'All Projects', icon: <Eye className="w-4 h-4" /> },
-    { id: 'pc', name: 'Custom PCs', icon: <Monitor className="w-4 h-4" /> },
-    { id: 'web', name: 'Web Development', icon: <Code className="w-4 h-4" /> },
-    { id: 'repair', name: 'Repairs', icon: <Wrench className="w-4 h-4" /> }
-  ]
-
-  const projects = [
+  const feedbackSlots = [
     {
       id: 1,
-      title: 'Gaming Beast RTX 4090',
-      category: 'pc',
-      image: '/api/placeholder/400/300',
-      description: 'Ultra-high-end gaming rig featuring RTX 4090, Intel i9-13900K, 32GB DDR5 RAM, and custom liquid cooling.',
-      tech: ['RTX 4090', 'i9-13900K', '32GB DDR5', '2TB NVMe', 'Custom Loop'],
-      client: 'Gaming Enthusiast',
-      date: '2024',
-      rating: 5,
-      price: '$4,500',
-      features: [
-        '4K Gaming at 144Hz',
-        'Ray Tracing Enabled',
-        'Custom Cable Management',
-        'RGB Lighting Setup',
-        'Overclocked Performance'
-      ]
+      status: 'available',
+      title: 'Customer Feedback Spot #1',
+      description: 'Be one of our first customers and share your experience',
+      benefits: ['Free consultation', 'Priority support', 'Special discount'],
+      icon: <Star className="w-6 h-6" />,
+      category: 'premium'
     },
     {
       id: 2,
-      title: 'E-commerce Platform',
-      category: 'web',
-      image: '/api/placeholder/400/300',
-      description: 'Modern e-commerce website with payment integration, inventory management, and mobile-responsive design.',
-      tech: ['Next.js', 'Stripe', 'Tailwind CSS', 'Firebase', 'TypeScript'],
-      client: 'Local Business',
-      date: '2024',
-      rating: 5,
-      price: '$2,500',
-      features: [
-        'Payment Processing',
-        'Inventory Management',
-        'Mobile Responsive',
-        'SEO Optimized',
-        'Admin Dashboard'
-      ]
+      status: 'available',
+      title: 'Customer Feedback Spot #2',
+      description: 'Help us improve while getting premium service',
+      benefits: ['Exclusive pricing', 'Extended warranty', 'Follow-up support'],
+      icon: <MessageCircle className="w-6 h-6" />,
+      category: 'standard'
     },
     {
       id: 3,
-      title: 'Video Editing Workstation',
-      category: 'pc',
-      image: '/api/placeholder/400/300',
-      description: 'Professional workstation optimized for 4K video editing, 3D rendering, and content creation.',
-      tech: ['RTX 4080', 'Ryzen 9 7950X', '64GB RAM', '4TB Storage', '10Gbps Network'],
-      client: 'Content Creator',
-      date: '2024',
-      rating: 5,
-      price: '$3,200',
-      features: [
-        '4K Video Editing',
-        '3D Rendering',
-        'Fast Export Times',
-        'Multiple Monitor Setup',
-        'Professional Audio'
-      ]
+      status: 'available',
+      title: 'Customer Feedback Spot #3',
+      description: 'Join our founding customers program',
+      benefits: ['Lifetime support', 'Referral rewards', 'Beta testing access'],
+      icon: <Award className="w-6 h-6" />,
+      category: 'premium'
     },
     {
       id: 4,
-      title: 'Virus Removal & Optimization',
-      category: 'repair',
-      image: '/api/placeholder/400/300',
-      description: 'Complete system cleanup, virus removal, and performance optimization for a business client.',
-      tech: ['Virus Removal', 'System Optimization', 'Data Recovery', 'Backup Setup'],
-      client: 'Small Business',
-      date: '2024',
-      rating: 5,
-      price: '$150',
-      features: [
-        'Malware Removal',
-        'System Optimization',
-        'Data Backup',
-        'Security Setup',
-        'Performance Boost'
-      ]
+      status: 'available',
+      title: 'Customer Feedback Spot #4',
+      description: 'Shape our services while getting exclusive benefits',
+      benefits: ['Custom solutions', 'Priority scheduling', 'Direct access'],
+      icon: <Gift className="w-6 h-6" />,
+      category: 'standard'
     },
     {
       id: 5,
-      title: 'Portfolio Website',
-      category: 'web',
-      image: '/api/placeholder/400/300',
-      description: 'Modern portfolio website with animations, contact forms, and professional design.',
-      tech: ['React', 'Framer Motion', 'Tailwind CSS', 'Netlify', 'EmailJS'],
-      client: 'Freelance Designer',
-      date: '2024',
-      rating: 5,
-      price: '$1,200',
-      features: [
-        'Smooth Animations',
-        'Contact Forms',
-        'Portfolio Gallery',
-        'Blog Integration',
-        'SEO Optimized'
-      ]
+      status: 'available',
+      title: 'Customer Feedback Spot #5',
+      description: 'Be part of our success story from the beginning',
+      benefits: ['Founding member status', 'Exclusive events', 'Lifetime discounts'],
+      icon: <Users className="w-6 h-6" />,
+      category: 'premium'
     },
     {
       id: 6,
-      title: 'Streaming PC Build',
-      category: 'pc',
-      image: '/api/placeholder/400/300',
-      description: 'Dual-purpose gaming and streaming PC with capture card integration and professional audio setup.',
-      tech: ['RTX 4070', 'Ryzen 7 7700X', '32GB RAM', 'Capture Card', 'Audio Interface'],
-      client: 'Twitch Streamer',
-      date: '2024',
-      rating: 5,
-      price: '$2,800',
-      features: [
-        '1080p Streaming',
-        'High FPS Gaming',
-        'Professional Audio',
-        'Capture Card',
-        'Dual Monitor Setup'
-      ]
+      status: 'available',
+      title: 'Customer Feedback Spot #6',
+      description: 'Help us perfect our craft while getting premium service',
+      benefits: ['Beta testing', 'Custom features', 'Extended support'],
+      icon: <CheckCircle className="w-6 h-6" />,
+      category: 'standard'
     }
   ]
 
-  const filteredProjects = selectedCategory === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory)
+  const categories = [
+    { id: 'all', name: 'All Spots', icon: <Users className="w-4 h-4" /> },
+    { id: 'premium', name: 'Premium Spots', icon: <Star className="w-4 h-4" /> },
+    { id: 'standard', name: 'Standard Spots', icon: <CheckCircle className="w-4 h-4" /> }
+  ]
 
-  const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
-    if (!project) return null
+  const [selectedCategory, setSelectedCategory] = useState('all')
 
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          className="bg-dark-200 border border-neon-cyan max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="p-6">
-            <div className="flex justify-between items-start mb-6">
-              <h2 className="text-3xl font-cyber font-bold text-neon-cyan">{project.title}</h2>
-              <button
-                onClick={onClose}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div>
-                <div className="w-full h-64 bg-dark-300 flex items-center justify-center mb-4">
-                  <span className="text-gray-500">Project Image</span>
-                </div>
-                <p className="text-gray-300 mb-4">{project.description}</p>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Client:</span>
-                    <span className="text-white font-cyber">{project.client}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Date:</span>
-                    <span className="text-white font-cyber">{project.date}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Price:</span>
-                    <span className="text-neon-cyan font-cyber font-bold">{project.price}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Rating:</span>
-                    <div className="flex items-center">
-                      {[...Array(project.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-cyber font-bold text-white mb-3">Technologies Used</h3>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 text-sm bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                
-                <h3 className="text-xl font-cyber font-bold text-white mb-3">Key Features</h3>
-                <ul className="space-y-2">
-                  {project.features.map((feature, index) => (
-                    <li key={index} className="flex items-center text-gray-300">
-                      <div className="w-2 h-2 bg-neon-green rounded-full mr-3"></div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    )
+  const filteredSlots = selectedCategory === 'all' 
+    ? feedbackSlots 
+    : feedbackSlots.filter(slot => slot.category === selectedCategory)
+
+  const handleFeedbackClick = (id: number) => {
+    setSelectedFeedback(id)
+    // Here you could open a survey form or redirect to a feedback page
+    console.log(`Customer feedback slot ${id} selected`)
   }
 
   return (
@@ -262,18 +104,57 @@ const PortfolioPage = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-cyber font-bold text-neon-cyan mb-4">
-            PORTFOLIO
+            FOUNDING CUSTOMERS
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Showcasing our best work and achievements. Each project represents our commitment to quality and innovation.
+            Be one of our first customers and help shape our services while getting exclusive benefits. 
+            Limited spots available for our founding customers program.
           </p>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12"
+        >
+          <div className="pixel-card text-center">
+            <div className="text-neon-cyan mb-4 flex justify-center">
+              <Users className="w-8 h-8" />
+            </div>
+            <div className="text-3xl font-cyber font-bold text-white mb-2">6</div>
+            <div className="text-gray-400 font-cyber">Spots Available</div>
+          </div>
+          <div className="pixel-card text-center">
+            <div className="text-neon-pink mb-4 flex justify-center">
+              <Gift className="w-8 h-8" />
+            </div>
+            <div className="text-3xl font-cyber font-bold text-white mb-2">Exclusive</div>
+            <div className="text-gray-400 font-cyber">Benefits</div>
+          </div>
+          <div className="pixel-card text-center">
+            <div className="text-neon-green mb-4 flex justify-center">
+              <CheckCircle className="w-8 h-8" />
+            </div>
+            <div className="text-3xl font-cyber font-bold text-white mb-2">Priority</div>
+            <div className="text-gray-400 font-cyber">Service</div>
+          </div>
+          <div className="pixel-card text-center">
+            <div className="text-neon-cyan mb-4 flex justify-center">
+              <Star className="w-8 h-8" />
+            </div>
+            <div className="text-3xl font-cyber font-bold text-white mb-2">Lifetime</div>
+            <div className="text-gray-400 font-cyber">Support</div>
+          </div>
         </motion.div>
 
         {/* Filter Categories */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-wrap justify-center gap-4 mb-12"
         >
           {categories.map((category) => (
@@ -294,105 +175,171 @@ const PortfolioPage = () => {
           ))}
         </motion.div>
 
-        {/* Projects Grid */}
+        {/* Feedback Slots Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {filteredProjects.map((project, index) => (
+          {filteredSlots.map((slot, index) => (
             <motion.div
-              key={project.id}
+              key={slot.id}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="pixel-card group cursor-pointer"
-              onClick={() => setSelectedProject(project)}
+              whileHover={{ scale: 1.02 }}
+              className="pixel-card group cursor-pointer relative overflow-hidden"
+              onClick={() => handleFeedbackClick(slot.id)}
             >
-              <div className="relative overflow-hidden mb-4">
-                <div className="w-full h-48 bg-dark-300 flex items-center justify-center">
-                  <span className="text-gray-500">Project Image</span>
-                </div>
-                <div className="absolute inset-0 bg-neon-cyan/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <Eye className="w-8 h-8 text-white" />
-                </div>
-                <div className="absolute top-4 right-4">
-                  <span className={`px-2 py-1 text-xs font-cyber ${
-                    project.category === 'pc' ? 'bg-neon-cyan/20 text-neon-cyan' :
-                    project.category === 'web' ? 'bg-neon-pink/20 text-neon-pink' :
-                    'bg-neon-green/20 text-neon-green'
-                  }`}>
-                    {categories.find(c => c.id === project.category)?.name}
-                  </span>
-                </div>
+              {/* Status Badge */}
+              <div className="absolute top-4 right-4 z-10">
+                <span className="px-3 py-1 text-xs bg-neon-green text-black font-cyber font-bold rounded-full">
+                  AVAILABLE
+                </span>
               </div>
+
+              {/* Category Badge */}
+              <div className="absolute top-4 left-4 z-10">
+                <span className={`px-2 py-1 text-xs font-cyber ${
+                  slot.category === 'premium' 
+                    ? 'bg-neon-pink/20 text-neon-pink' 
+                    : 'bg-neon-cyan/20 text-neon-cyan'
+                }`}>
+                  {slot.category === 'premium' ? 'PREMIUM' : 'STANDARD'}
+                </span>
+              </div>
+
+              {/* Animated Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-neon-pink/10 to-neon-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
-              <div className="space-y-3">
-                <h3 className="text-xl font-cyber font-bold text-white group-hover:text-neon-cyan transition-colors">
-                  {project.title}
-                </h3>
-                
-                <p className="text-gray-400 text-sm line-clamp-2">
-                  {project.description}
-                </p>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="w-4 h-4 text-neon-pink" />
-                    <span className="text-sm text-gray-400">{project.date}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-neon-cyan font-cyber font-bold">{project.price}</span>
-                  </div>
+              <div className="relative z-10 space-y-4">
+                {/* Icon */}
+                <div className="text-neon-cyan group-hover:text-neon-pink transition-colors duration-300">
+                  {slot.icon}
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    {[...Array(project.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                    ))}
+                {/* Content */}
+                <div className="space-y-3">
+                  <h3 className="text-xl font-cyber font-bold text-white group-hover:text-neon-cyan transition-colors duration-300">
+                    {slot.title}
+                  </h3>
+                  
+                  <p className="text-gray-400 text-sm">
+                    {slot.description}
+                  </p>
+                  
+                  {/* Benefits */}
+                  <div className="space-y-2">
+                    <h4 className="text-neon-pink font-cyber font-semibold text-sm">
+                      Exclusive Benefits:
+                    </h4>
+                    <ul className="space-y-1">
+                      {slot.benefits.map((benefit, idx) => (
+                        <li key={idx} className="flex items-center space-x-2 text-xs text-gray-300">
+                          <CheckCircle className="w-3 h-3 text-neon-green" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-neon-cyan" />
                 </div>
+
+                {/* CTA Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full bg-gradient-to-r from-neon-cyan to-neon-pink text-white font-cyber font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-neon-cyan/30 transition-all duration-300"
+                >
+                  Claim This Spot
+                </motion.button>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Stats Section */}
+        {/* Call to Action */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
+          viewport={{ once: true }}
+          className="text-center mt-16"
         >
-          <div className="text-center">
-            <div className="text-3xl font-cyber font-bold text-neon-cyan">50+</div>
-            <div className="text-sm text-gray-400">Projects Completed</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-cyber font-bold text-neon-green">100%</div>
-            <div className="text-sm text-gray-400">Client Satisfaction</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-cyber font-bold text-neon-pink">5.0</div>
-            <div className="text-sm text-gray-400">Average Rating</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-cyber font-bold text-neon-cyan">24/7</div>
-            <div className="text-sm text-gray-400">Support Available</div>
+          <div className="pixel-card bg-gradient-to-r from-dark-300 to-dark-200 border-neon-cyan">
+            <h3 className="text-2xl font-cyber font-bold text-neon-cyan mb-4">
+              Why Become a Founding Customer?
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Exclusive pricing and discounts</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Priority scheduling and support</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Direct input on service improvements</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Extended warranty coverage</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Referral rewards program</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Beta testing for new services</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Lifetime support access</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-neon-green" />
+                  <span className="text-gray-300">Founding member status</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-8 pt-6 border-t border-neon-cyan/30">
+              <p className="text-gray-400 text-sm mb-4">
+                Limited spots available - secure your place today!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    window.open('https://calendly.com/pattonspcs', '_blank')
+                  }}
+                  className="bg-gradient-to-r from-neon-cyan to-neon-pink text-white font-cyber font-bold py-3 px-8 rounded-lg hover:shadow-lg hover:shadow-neon-cyan/30 transition-all duration-300"
+                >
+                  <Calendar className="w-5 h-5 mr-2 inline" />
+                  Book Your Consultation
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    window.open('tel:2192306791', '_self')
+                  }}
+                  className="bg-transparent border border-neon-cyan text-neon-cyan font-cyber font-bold py-3 px-8 rounded-lg hover:bg-neon-cyan hover:text-dark-300 transition-all duration-300"
+                >
+                  <Phone className="w-5 h-5 mr-2 inline" />
+                  Call Directly
+                </motion.button>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <ProjectModal 
-          project={selectedProject} 
-          onClose={() => setSelectedProject(null)} 
-        />
-      )}
     </div>
   )
 }
